@@ -3,6 +3,44 @@ import { NextRequest, NextResponse } from "next/server";
 const APIMART_BASE_URL = "https://api.apimart.ai/v1";
 const APIMART_API_KEY = process.env.APIMART_API_KEY || "";
 
+// Poll task status with timeout
+async function pollTaskStatus(taskId: string, maxAttempts = 30): Promise<string | null> {
+  for (let i = 0; i < maxAttempts; i++) {
+    const response = await fetch(`${APIMART_BASE_URL}/tasks/${taskId}`, {
+      headers: {
+        Authorization: `Bearer ${APIMART_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Task poll failed: ${response.status}`);
+      await new Promise((r) => setTimeout(r, 2000));
+      continue;
+    }
+
+    const data = await response.json();
+    const task = data.data;
+
+    console.log(`Task ${taskId} status: ${task?.status}, progress: ${task?.progress}%`);
+
+    if (task?.status === "completed") {
+      const imageUrl = task.result?.images?.[0]?.url?.[0];
+      if (imageUrl) return imageUrl;
+      return null;
+    }
+
+    if (task?.status === "failed") {
+      throw new Error(task.error || "Image generation failed");
+    }
+
+    // Wait before next poll
+    await new Promise((r) => setTimeout(r, 3000));
+  }
+
+  throw new Error("Timeout waiting for image generation");
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { palmReading, faceReading, scores } = await req.json();
@@ -43,17 +81,46 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
+    console.log("APIMart response:", JSON.stringify(data, null, 2));
+
+    // Check if it's an async task
+    const taskId = data.data?.[0]?.task_id;
     
-    // Return the image URL
-    return NextResponse.json({
-      success: true,
-      imageUrl: data.data?.[0]?.url,
-      revisedPrompt: data.data?.[0]?.revised_prompt,
-    });
+    if (taskId) {
+      // Async task - poll for completion
+      console.log(`Task submitted: ${taskId}, polling...`);
+      const imageUrl = await pollTaskStatus(taskId);
+      
+      if (imageUrl) {
+        return NextResponse.json({
+          success: true,
+          imageUrl,
+        });
+      } else {
+        return NextResponse.json(
+          { error: "No image URL in task result" },
+          { status: 500 }
+        );
+      }
+    }
+
+    // Direct response (if API returns image URL directly)
+    const imageUrl = data.data?.[0]?.url;
+    if (imageUrl) {
+      return NextResponse.json({
+        success: true,
+        imageUrl,
+      });
+    }
+
+    return NextResponse.json(
+      { error: "No image URL in response" },
+      { status: 500 }
+    );
   } catch (error) {
     console.error("Generate report image error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: error instanceof Error ? error.message : "Internal server error" },
       { status: 500 }
     );
   }
