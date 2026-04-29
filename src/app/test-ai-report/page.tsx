@@ -1,0 +1,297 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Loader2, Download, RefreshCw, ImageIcon, Sparkles } from "lucide-react";
+
+const DEMO_SCORES = {
+  palm: [
+    { label: "Love", percentage: 78, color: "#c47b8a" },
+    { label: "Career", percentage: 82, color: "#d4a853" },
+    { label: "Vitality", percentage: 65, color: "#4caf82" },
+    { label: "Intuition", percentage: 91, color: "#9b7fd4" },
+  ],
+  face: [
+    { label: "Expression", percentage: 84, color: "#d4a853" },
+    { label: "Intuition", percentage: 73, color: "#9b7fd4" },
+    { label: "Confidence", percentage: 69, color: "#c47b8a" },
+    { label: "Diplomacy", percentage: 88, color: "#4caf82" },
+  ],
+};
+
+export default function TestAIReportPage() {
+  const [readingType, setReadingType] = useState<"palm" | "face">("palm");
+  const [userImage, setUserImage] = useState<string | null>(null);
+  const [userImageBase64, setUserImageBase64] = useState<string>("");
+  const [generating, setGenerating] = useState(false);
+  const [result, setResult] = useState<{
+    imageUrl?: string;
+    poeticDescription?: string;
+    error?: string;
+  } | null>(null);
+  const [logs, setLogs] = useState<string[]>([]);
+
+  const addLog = (msg: string) => {
+    setLogs((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setUserImage(result);
+        const base64 = result.split(',')[1];
+        setUserImageBase64(base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGenerate = async () => {
+    if (!userImageBase64) {
+      addLog("Error: Please upload a photo first");
+      return;
+    }
+
+    setGenerating(true);
+    setResult(null);
+    setLogs([]);
+    addLog("🚀 Starting AI Report Generation...");
+    addLog("Step 1: GPT-4o Vision analyzing your photo...");
+
+    const startTime = Date.now();
+
+    try {
+      const response = await fetch("/api/generate-report-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userImageBase64,
+          readingData: {
+            scores: DEMO_SCORES[readingType],
+          },
+          readingType,
+        }),
+      });
+
+      const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+      addLog(`Step 2: Image generation completed in ${duration}s`);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || `HTTP ${response.status}`);
+      }
+
+      if (data.success && data.imageUrl) {
+        setResult({
+          imageUrl: data.imageUrl,
+          poeticDescription: data.poeticDescription,
+        });
+        addLog("✅ Report generated successfully!");
+      } else {
+        throw new Error("No image URL in response");
+      }
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Unknown error";
+      setResult({ error: errorMsg });
+      addLog(`❌ Error: ${errorMsg}`);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <div className="pt-24 pb-16 sm:pt-32 sm:pb-20">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-terracotta/8 border border-terracotta/15 mb-4">
+            <Sparkles size={14} className="text-terracotta" />
+            <span className="text-xs font-medium text-terracotta uppercase tracking-wider font-accent">
+              AI-Powered Report
+            </span>
+          </div>
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold">
+            Test AI Report Generation
+          </h1>
+          <p className="mt-2 text-text-secondary">
+            GPT-4o Vision analyzes your photo → GPT-Image-2 generates a beautiful report
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Left: Controls */}
+          <div className="space-y-6">
+            {/* Type Selection */}
+            <div className="surface-card rounded-2xl p-6">
+              <h3 className="font-display text-lg font-semibold mb-4">
+                Reading Type
+              </h3>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setReadingType("palm")}
+                  className={`flex-1 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                    readingType === "palm"
+                      ? "bg-terracotta text-white"
+                      : "bg-bg-surface border border-border"
+                  }`}
+                >
+                  ✋ Palm Reading
+                </button>
+                <button
+                  onClick={() => setReadingType("face")}
+                  className={`flex-1 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                    readingType === "face"
+                      ? "bg-terracotta text-white"
+                      : "bg-bg-surface border border-border"
+                  }`}
+                >
+                  👤 Face Reading
+                </button>
+              </div>
+            </div>
+
+            {/* Upload Photo */}
+            <div className="surface-card rounded-2xl p-6">
+              <h3 className="font-display text-lg font-semibold mb-4">
+                Upload Your Photo
+              </h3>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="hidden"
+                id="ai-report-photo"
+              />
+              <label
+                htmlFor="ai-report-photo"
+                className="block w-full p-4 border-2 border-dashed border-border rounded-xl text-center cursor-pointer hover:border-terracotta/40 transition-colors"
+              >
+                {userImage ? (
+                  <img
+                    src={userImage}
+                    alt="Preview"
+                    className="w-32 h-32 mx-auto rounded-xl object-cover"
+                  />
+                ) : (
+                  <div className="py-4">
+                    <ImageIcon
+                      size={32}
+                      className="mx-auto mb-2 text-text-muted"
+                    />
+                    <p className="text-sm text-text-secondary">
+                      Click to upload your {readingType} photo
+                    </p>
+                  </div>
+                )}
+              </label>
+            </div>
+
+            {/* Generate Button */}
+            <Button
+              onClick={handleGenerate}
+              disabled={generating || !userImage}
+              className="w-full text-base gap-2"
+            >
+              {generating ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  Generating AI Report...
+                </>
+              ) : (
+                <>
+                  <Sparkles size={18} />
+                  Generate AI Report
+                </>
+              )}
+            </Button>
+
+            {/* Logs */}
+            <div className="surface-card rounded-2xl p-4">
+              <h3 className="font-display text-sm font-semibold mb-2 text-text-secondary">
+                Process Logs
+              </h3>
+              <div className="h-40 overflow-y-auto text-xs font-mono space-y-1">
+                {logs.length === 0 ? (
+                  <p className="text-text-muted">Click generate to see process...</p>
+                ) : (
+                  logs.map((log, i) => (
+                    <p key={i} className="text-text-secondary">
+                      {log}
+                    </p>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Result */}
+          <div>
+            <div className="surface-card rounded-2xl p-6 h-full min-h-[400px]">
+              <h3 className="font-display text-lg font-semibold mb-4">
+                Generated Report
+              </h3>
+
+              {result?.error ? (
+                <div className="text-center py-12">
+                  <p className="text-error mb-2">❌ Generation Failed</p>
+                  <p className="text-sm text-text-secondary">{result.error}</p>
+                  <Button
+                    variant="secondary"
+                    className="mt-4 gap-2"
+                    onClick={handleGenerate}
+                  >
+                    <RefreshCw size={14} /> Retry
+                  </Button>
+                </div>
+              ) : result?.imageUrl ? (
+                <div className="space-y-4">
+                  <img
+                    src={result.imageUrl}
+                    alt="Generated report"
+                    className="w-full rounded-xl"
+                  />
+                  {result.poeticDescription && (
+                    <div className="p-4 bg-bg-surface rounded-xl">
+                      <p className="text-xs font-semibold text-text-secondary mb-1">
+                        AI Insight:
+                      </p>
+                      <p className="text-sm text-text-primary italic">
+                        &ldquo;{result.poeticDescription}&rdquo;
+                      </p>
+                    </div>
+                  )}
+                  <div className="flex gap-3">
+                    <a
+                      href={result.imageUrl}
+                      download="aurapalm-ai-report.png"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium bg-terracotta text-bg-surface rounded-full hover:bg-terracotta-soft transition-all"
+                    >
+                      <Download size={14} /> Download
+                    </a>
+                    <Button
+                      variant="secondary"
+                      className="flex-1 gap-2"
+                      onClick={handleGenerate}
+                    >
+                      <RefreshCw size={14} /> Regenerate
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-64 text-text-muted">
+                  <Sparkles size={48} className="mb-4 opacity-30" />
+                  <p>Your AI-generated report will appear here</p>
+                  <p className="text-xs mt-2">Powered by GPT-4o + GPT-Image-2</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
