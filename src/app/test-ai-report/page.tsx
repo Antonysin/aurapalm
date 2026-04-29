@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Loader2, Download, RefreshCw, ImageIcon, Sparkles } from "lucide-react";
+import { Loader2, Download, RefreshCw, ImageIcon, Sparkles, Hand } from "lucide-react";
 
 const DEMO_SCORES = {
   palm: [
-    { label: "Love", percentage: 78, color: "#c47b8a" },
-    { label: "Career", percentage: 82, color: "#d4a853" },
-    { label: "Vitality", percentage: 65, color: "#4caf82" },
-    { label: "Intuition", percentage: 91, color: "#9b7fd4" },
+    { label: "Life", percentage: 82, color: "#4caf82" },
+    { label: "Heart", percentage: 78, color: "#c47b8a" },
+    { label: "Mind", percentage: 88, color: "#d4a853" },
+    { label: "Fate", percentage: 71, color: "#9b7fd4" },
   ],
   face: [
     { label: "Expression", percentage: 84, color: "#d4a853" },
@@ -58,8 +58,8 @@ export default function TestAIReportPage() {
     setGenerating(true);
     setResult(null);
     setLogs([]);
-    addLog("🚀 Starting AI Report Generation...");
-    addLog("Step 1: GPT-4o Vision analyzing your photo...");
+    addLog("🚀 Starting your personal reading...");
+    addLog("🔮 Master palmist analyzing your hand...");
 
     const startTime = Date.now();
 
@@ -77,7 +77,7 @@ export default function TestAIReportPage() {
       });
 
       const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-      addLog(`Step 2: Image generation completed in ${duration}s`);
+      addLog(`✨ Report crafted in ${duration}s`);
 
       const data = await response.json();
 
@@ -90,7 +90,7 @@ export default function TestAIReportPage() {
           imageUrl: data.imageUrl,
           poeticDescription: data.poeticDescription,
         });
-        addLog("✅ Report generated successfully!");
+        addLog("🎨 Your luxury report is ready!");
       } else {
         throw new Error("No image URL in response");
       }
@@ -109,16 +109,16 @@ export default function TestAIReportPage() {
         {/* Header */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-terracotta/8 border border-terracotta/15 mb-4">
-            <Sparkles size={14} className="text-terracotta" />
+            <Hand size={14} className="text-terracotta" />
             <span className="text-xs font-medium text-terracotta uppercase tracking-wider font-accent">
-              AI-Powered Report
+              Luxury Palm Reading
             </span>
           </div>
           <h1 className="font-display text-3xl sm:text-4xl font-semibold">
-            Test AI Report Generation
+            Your Personal Reading
           </h1>
           <p className="mt-2 text-text-secondary">
-            GPT-4o Vision analyzes your photo → GPT-Image-2 generates a beautiful report
+            Upload your palm photo. Our AI master palmist will create a beautiful, personalized report.
           </p>
         </div>
 
@@ -199,12 +199,12 @@ export default function TestAIReportPage() {
               {generating ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
-                  Generating AI Report...
+                  Crafting Your Reading...
                 </>
               ) : (
                 <>
                   <Sparkles size={18} />
-                  Generate AI Report
+                  Reveal My Reading
                 </>
               )}
             </Button>
@@ -212,11 +212,11 @@ export default function TestAIReportPage() {
             {/* Logs */}
             <div className="surface-card rounded-2xl p-4">
               <h3 className="font-display text-sm font-semibold mb-2 text-text-secondary">
-                Process Logs
+                Process
               </h3>
               <div className="h-40 overflow-y-auto text-xs font-mono space-y-1">
                 {logs.length === 0 ? (
-                  <p className="text-text-muted">Click generate to see process...</p>
+                  <p className="text-text-muted">Upload a photo to begin...</p>
                 ) : (
                   logs.map((log, i) => (
                     <p key={i} className="text-text-secondary">
@@ -232,7 +232,7 @@ export default function TestAIReportPage() {
           <div>
             <div className="surface-card rounded-2xl p-6 h-full min-h-[400px]">
               <h3 className="font-display text-lg font-semibold mb-4">
-                Generated Report
+                Your Report
               </h3>
 
               {result?.error ? (
@@ -244,48 +244,48 @@ export default function TestAIReportPage() {
                     className="mt-4 gap-2"
                     onClick={handleGenerate}
                   >
-                    <RefreshCw size={14} /> Retry
+                    <RefreshCw size={14} /> Try Again
                   </Button>
                 </div>
               ) : result?.imageUrl ? (
                 <div className="space-y-4">
                   <img
                     src={result.imageUrl}
-                    alt="Generated report"
+                    alt="Your personal reading report"
                     className="w-full rounded-xl"
                   />
                   {result.poeticDescription && (
                     <div className="p-4 bg-bg-surface rounded-xl">
                       <p className="text-xs font-semibold text-text-secondary mb-1">
-                        AI Insight:
+                        Master Palmist's Insight:
                       </p>
-                      <p className="text-sm text-text-primary italic">
-                        &ldquo;{result.poeticDescription}&rdquo;
+                      <p className="text-sm text-text-primary italic leading-relaxed">
+                        {result.poeticDescription}
                       </p>
                     </div>
                   )}
                   <div className="flex gap-3">
                     <a
                       href={result.imageUrl}
-                      download="aurapalm-ai-report.png"
+                      download="aurapalm-reading.png"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium bg-terracotta text-bg-surface rounded-full hover:bg-terracotta-soft transition-all"
                     >
-                      <Download size={14} /> Download
+                      <Download size={14} /> Save Report
                     </a>
                     <Button
                       variant="secondary"
                       className="flex-1 gap-2"
                       onClick={handleGenerate}
                     >
-                      <RefreshCw size={14} /> Regenerate
+                      <RefreshCw size={14} /> New Reading
                     </Button>
                   </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-64 text-text-muted">
-                  <Sparkles size={48} className="mb-4 opacity-30" />
-                  <p>Your AI-generated report will appear here</p>
-                  <p className="text-xs mt-2">Powered by GPT-4o + GPT-Image-2</p>
+                  <Hand size={48} className="mb-4 opacity-30" />
+                  <p>Your personalized reading will appear here</p>
+                  <p className="text-xs mt-2">Luxury report with line art and analysis</p>
                 </div>
               )}
             </div>
