@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraPalm — 5 Design Directions Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --preview-bg: #0c0c14;
+      --preview-surface: #16162a;
+      --preview-border: rgba(255,255,255,0.08);
+      --preview-text: #e8e8f0;
+      --preview-muted: #6b6b8a;
+      --preview-accent: #d4a853;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--preview-bg);
+      color: var(--preview-text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== PREVIEW UI ===== */
+    .preview-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(12,12,20,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--preview-border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .preview-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--preview-accent);
+      white-space: nowrap;
+    }
+
+    .preview-nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .preview-nav a {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--preview-muted);
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .preview-nav a:hover,
+    .preview-nav a.active {
+      color: var(--preview-accent);
+      border-color: var(--preview-accent);
+      background: rgba(212,168,83,0.08);
+    }
+
+    .preview-section {
+      min-height: 100vh;
+      padding: 5rem 2rem 3rem;
+      position: relative;
+    }
+
+    .preview-label {
+      position: absolute;
+      top: 5.5rem;
+      left: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--preview-muted);
+      z-index: 10;
+    }
+
+    .preview-frame {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--preview-border);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+
+    .preview-frame iframe {
+      width: 100%;
+      height: 85vh;
+      border: none;
+      display: block;
+    }
+
+    .preview-meta {
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .preview-meta-card {
+      background: var(--preview-surface);
+      border: 1px solid var(--preview-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+    }
+
+    .preview-meta-card h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--preview-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .preview-meta-card p {
+      font-size: 0.85rem;
+      color: var(--preview-text);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .preview-header { flex-direction: column; padding: 0.75rem 1rem; }
+      .preview-header h1 { font-size: 1rem; }
+      .preview-nav { justify-content: center; }
+      .preview-nav a { font-size: 0.6rem; padding: 0.3rem 0.5rem; }
+      .preview-section { padding: 7rem 1rem 2rem; }
+      .preview-label { top: 7.5rem; left: 1rem; }
+      .preview-frame iframe { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="preview-header">
+    <h1>AuraPalm — 5 Design Directions</h1>
+    <nav class="preview-nav">
+      <a href="#style1" class="active">1. Celestial</a>
+      <a href="#style2">2. Obsidian</a>
+      <a href="#style3">3. Organic</a>
+      <a href="#style4">4. Editorial</a>
+      <a href="#style5">5. Neo-Future</a>
+    </nav>
+  </header>
+
+  <!-- STYLE 1: Celestial Minimal -->
+  <section class="preview-section" id="style1">
+    <div class="preview-label">Style 01 — Celestial Minimal</div>
+    <div class="preview-frame">
+      <iframe src="style1.html" title="Celestial Minimal Preview"></iframe>
+    </div>
+    <div class="preview-meta">
+      <div class="preview-meta-card">
+        <h4>Theme</h4>
+        <p>Light mode, warm off-white, generous whitespace. Like Calm meets Apple.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Typography</h4>
+        <p>Cormorant Garamond (display) + Source Sans 3 (body) + Space Grotesk (UI)</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Best For</h4>
+        <p>Broadest appeal. Wellness seekers 30-55. Maximum trust & conversion.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Mood</h4>
+        <p>Calm. Premium. Trustworthy. Opening a beautifully designed book.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STYLE 2: Obsidian Luxury -->
+  <section class="preview-section" id="style2">
+    <div class="preview-label">Style 02 — Obsidian Luxury</div>
+    <div class="preview-frame">
+      <iframe src="style2.html" title="Obsidian Luxury Preview"></iframe>
+    </div>
+    <div class="preview-meta">
+      <div class="preview-meta-card">
+        <h4>Theme</h4>
+        <p>True black obsidian with jewel tones. Cartier meets Mercury.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Typography</h4>
+        <p>Playfair Display (display) + Inter (body) + JetBrains Mono (data)</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Best For</h4>
+        <p>High-income demographics. Premium pricing justification. Ages 35-60.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Mood</h4>
+        <p>Expensive. Confident. Timeless. A black-tie invitation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STYLE 3: Organic Ethereal -->
+  <section class="preview-section" id="style3">
+    <div class="preview-label">Style 03 — Organic Ethereal</div>
+    <div class="preview-frame">
+      <iframe src="style3.html" title="Organic Ethereal Preview"></iframe>
+    </div>
+    <div class="preview-meta">
+      <div class="preview-meta-card">
+        <h4>Theme</h4>
+        <p>Earth tones, fluid shapes, hand-drawn warmth. Nature meets wisdom.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Typography</h4>
+        <p>Libre Baskerville (display) + DM Sans (body) + Caveat (accent)</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Best For</h4>
+        <p>Women 25-45. Yoga/meditation community. Instagram/Pinterest marketing.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Mood</h4>
+        <p>Warm. Human. Grounded. A sunlit apothecary or yoga studio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STYLE 4: Editorial Brutalist -->
+  <section class="preview-section" id="style4">
+    <div class="preview-label">Style 04 — Editorial Brutalist</div>
+    <div class="preview-frame">
+      <iframe src="style4.html" title="Editorial Brutalist Preview"></iframe>
+    </div>
+    <div class="preview-meta">
+      <div class="preview-meta-card">
+        <h4>Theme</h4>
+        <p>Magazine layout, asymmetric grids, visible borders. The New Yorker style.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Typography</h4>
+        <p>Instrument Serif (display) + Inter (body) + IBM Plex Mono (UI)</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Best For</h4>
+        <p>Content/SEO strategy. Building authority. Educated audience 28-50.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Mood</h4>
+        <p>Authoritative. Intellectual. Sunday morning with coffee and a magazine.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STYLE 5: Neo-Futurism -->
+  <section class="preview-section" id="style5">
+    <div class="preview-label">Style 05 — Neo-Futurism</div>
+    <div class="preview-frame">
+      <iframe src="style5.html" title="Neo-Futurism Preview"></iframe>
+    </div>
+    <div class="preview-meta">
+      <div class="preview-meta-card">
+        <h4>Theme</h4>
+        <p>Neon accents, grid overlays, glitch effects. Cyberpunk meets spiritual.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Typography</h4>
+        <p>Orbitron (display) + Inter (body) + JetBrains Mono (data)</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Best For</h4>
+        <p>Gen-Z/Millennial 18-35. TikTok viral growth. AI-tech positioning.</p>
+      </div>
+      <div class="preview-meta-card">
+        <h4>Mood</h4>
+        <p>Electric. Daring. Like stepping into a sci-fi movie interface.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Active nav highlighting on scroll
+    const sections = document.querySelectorAll('.preview-section');
+    const navLinks = document.querySelectorAll('.preview-nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const id = entry.target.getAttribute('id');
+          const active = document.querySelector(`.preview-nav a[href="#${id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+
+</body>
+</html>

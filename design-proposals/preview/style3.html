@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraPalm — Organic Ethereal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #F3EDE4;
+      --bg-surface: #FAF6F0;
+      --bg-elevated: #E8E0D4;
+      --color-terracotta: #B85C38;
+      --color-ochre: #C9A227;
+      --color-sage: #6B8E6B;
+      --color-clay: #8B6F5E;
+      --color-stone: #A89B8C;
+      --color-border: rgba(139, 111, 94, 0.12);
+      --font-display: 'Libre Baskerville', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-accent: 'Caveat', cursive;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-base);
+      color: var(--color-clay);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Organic blob backgrounds */
+    .blob-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: blobMorph 25s ease-in-out infinite;
+    }
+
+    .blob-1 {
+      width: 500px; height: 500px;
+      background: rgba(184, 92, 56, 0.08);
+      top: -10%; left: -5%;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: rgba(201, 162, 39, 0.06);
+      top: 40%; right: -10%;
+      animation-delay: -8s;
+    }
+
+    .blob-3 {
+      width: 350px; height: 350px;
+      background: rgba(107, 142, 107, 0.06);
+      bottom: 10%; left: 30%;
+      animation-delay: -16s;
+    }
+
+    @keyframes blobMorph {
+      0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(0, 0) rotate(0deg); }
+      25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translate(20px, -30px) rotate(5deg); }
+      50% { border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%; transform: translate(-10px, 20px) rotate(-3deg); }
+      75% { border-radius: 40% 30% 60% 50% / 60% 50% 30% 40%; transform: translate(15px, 10px) rotate(2deg); }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(243, 237, 228, 0.85);
+      backdrop-filter: blur(20px);
+    }
+
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-terracotta);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-stone);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--color-terracotta); }
+
+    .btn-pill {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: var(--color-terracotta);
+      color: var(--bg-surface);
+      padding: 0.65rem 1.75rem;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(184, 92, 56, 0.25);
+    }
+
+    .btn-pill:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(184, 92, 56, 0.35);
+    }
+
+    .btn-outline {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: transparent;
+      color: var(--color-clay);
+      padding: 0.65rem 1.75rem;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1.5px solid var(--color-border);
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--color-terracotta);
+      color: var(--color-terracotta);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 6rem;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 680px;
+      position: relative;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      background: rgba(184, 92, 56, 0.08);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-terracotta);
+      margin-bottom: 2rem;
+    }
+
+    .tag svg { width: 12px; height: 12px; }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--color-clay);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--color-terracotta);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--color-stone);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-proof {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stars {
+      display: flex;
+      gap: 0.15rem;
+    }
+
+    .stars svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--color-ochre);
+    }
+
+    .social-proof p {
+      font-size: 0.8rem;
+      color: var(--color-stone);
+      margin: 0;
+    }
+
+    .social-proof p strong {
+      color: var(--color-clay);
+      font-weight: 500;
+    }
+
+    .privacy-note {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: var(--color-stone);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    /* Sections */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto 4rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+      color: var(--color-clay);
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      font-size: 1rem;
+      color: var(--color-stone);
+      line-height: 1.8;
+    }
+
+    /* How It Works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-num {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--color-terracotta);
+      margin-bottom: 1rem;
+    }
+
+    .step-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      background: rgba(184, 92, 56, 0.08);
+    }
+
+    .step-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--color-terracotta);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .step h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--color-clay);
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--color-stone);
+      line-height: 1.8;
+    }
+
+    /* Pricing */
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg-surface);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s;
+      box-shadow: 0 4px 20px rgba(139, 111, 94, 0.06);
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px) rotate(0.5deg);
+      box-shadow: 0 12px 40px rgba(139, 111, 94, 0.1);
+    }
+
+    .pricing-card.featured {
+      border: 2px solid rgba(184, 92, 56, 0.2);
+      box-shadow: 0 4px 24px rgba(184, 92, 56, 0.1);
+    }
+
+    .pricing-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--color-clay);
+    }
+
+    .price {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--color-terracotta);
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-card > p {
+      font-size: 0.85rem;
+      color: var(--color-stone);
+      margin-bottom: 1.5rem;
+    }
+
+    .features {
+      list-style: none;
+      flex: 1;
+    }
+
+    .features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--color-stone);
+      margin-bottom: 0.75rem;
+    }
+
+    .features li svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--color-sage);
+      stroke-width: 2.5;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .pricing-card .btn-pill,
+    .pricing-card .btn-outline {
+      width: 100%;
+      text-align: center;
+      margin-top: 1.5rem;
+      display: block;
+    }
+
+    /* Testimonials */
+    .testimonials-scroll {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .testimonials-scroll::-webkit-scrollbar { display: none; }
+
+    .testimonial {
+      min-width: 300px;
+      max-width: 300px;
+      background: var(--bg-surface);
+      border-radius: 24px;
+      padding: 1.75rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(139, 111, 94, 0.06);
+    }
+
+    .testimonial .stars { margin-bottom: 1rem; }
+
+    .testimonial p {
+      font-size: 0.9rem;
+      color: var(--color-stone);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 1.25rem;
+    }
+
+    .testimonial .name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-clay);
+    }
+
+    .testimonial .loc {
+      font-size: 0.75rem;
+      color: var(--color-stone);
+      margin-top: 0.15rem;
+    }
+
+    /* Footer */
+    .footer {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .footer-brand .logo {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--color-stone);
+      line-height: 1.8;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-stone);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--color-stone);
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--color-terracotta); }
+
+    .footer-bottom {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--color-stone);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .steps, .pricing-cards { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; }
+      .section { padding: 5rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob-container">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="logo">AuraPalm</a>
+      <div class="nav-links">
+        <a href="#">Palm Reading</a>
+        <a href="#">Face Reading</a>
+        <a href="#">Learn</a>
+        <a href="#">Pricing</a>
+        <a href="#" class="btn-pill">Try Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15 9L22 9L16 14L18 21L12 17L6 21L8 14L2 9L9 9Z"/></svg>
+        AI-Powered Palmistry
+      </div>
+      <h1>Your hands have always been <em>trying to tell you something</em>.</h1>
+      <p>AI-powered palm and face readings. Personal, private, and ready in 60 seconds.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-pill">Read My Palm</a>
+        <a href="#" class="btn-outline">See How It Works</a>
+      </div>
+      <div class="social-proof">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p>Trusted by over <strong>200,000</strong> readers worldwide</p>
+      </div>
+      <div class="privacy-note">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Your photo is analyzed and immediately deleted. We never store your image.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>Three simple steps to discover what your features reveal about you.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">one</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <h3>Upload Your Photo</h3>
+        <p>Take or upload a clear photo of your palm in natural light. Your image is encrypted and never stored.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">two</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L15 9L22 9L16 14L18 21L12 17L6 21L8 14L2 9L9 9Z"/></svg>
+        </div>
+        <h3>AI Reads Your Lines</h3>
+        <p>Our model identifies your unique palm lines and facial features — just like a master palmist would.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">three</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3>Receive Your Reading</h3>
+        <p>A beautifully written, personal report — not a template. Yours alone, ready in under a minute.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--bg-surface); margin: 0; max-width: none; padding: 7rem 2rem;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="section-header">
+        <h2>Simple, Transparent Pricing</h2>
+        <p>Start free. Upgrade when you want the full picture.</p>
+      </div>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <h3>Preview</h3>
+          <div class="price">Free</div>
+          <p>Get a taste of what your lines reveal.</p>
+          <ul class="features">
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Summary report (150 words)</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>3 key personality insights</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Free preview of all lines</li>
+          </ul>
+          <a href="#" class="btn-outline">Try Free</a>
+        </div>
+        <div class="pricing-card featured">
+          <h3>Full Reading</h3>
+          <div class="price">$4.99</div>
+          <p>Your complete personal palm reading.</p>
+          <ul class="features">
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Full report (2,000+ words)</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>All 4 palm lines analyzed</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Complete personality profile</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Downloadable PDF</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Shareable insight card</li>
+          </ul>
+          <a href="#" class="btn-pill">Get My Report</a>
+        </div>
+        <div class="pricing-card">
+          <h3>Complete Bundle</h3>
+          <div class="price">$12.99</div>
+          <p>Palm + Face reading with everything included.</p>
+          <ul class="features">
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Palm + Face combined report</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>12-month forward forecast</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Priority AI processing</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>PDF download included</li>
+            <li><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>Gift option available</li>
+          </ul>
+          <a href="#" class="btn-outline">Get Bundle</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Loved by Thousands</h2>
+      <p>Real stories from people who discovered more about themselves.</p>
+    </div>
+    <div class="testimonials-scroll">
+      <div class="testimonial">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p>"I was skeptical, but the reading described my personality so accurately it gave me chills."</p>
+        <div class="name">Emma R.</div>
+        <div class="loc">London, UK</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p>"Got this as a gift and ended up buying the full bundle. The depth surprised me."</p>
+        <div class="name">James K.</div>
+        <div class="loc">Austin, TX</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </div>
+        <p>"My heart line reading was uncanny. It described my approach to relationships better than my therapist."</p>
+        <div class="name">Sofia M.</div>
+        <div class="loc">Melbourne, Australia</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">AuraPalm</a>
+        <p>AI-powered palm and face readings. Personal, private, and ready in 60 seconds.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">Palm Reading</a>
+        <a href="#">Face Reading</a>
+        <a href="#">Pricing</a>
+        <a href="#">Gift a Reading</a>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <a href="#">Palm Reading Guide</a>
+        <a href="#">Face Reading Guide</a>
+        <a href="#">The Life Line</a>
+        <a href="#">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">How It Works</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 AuraPalm. All rights reserved.</span>
+      <span>For entertainment and self-reflection only.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

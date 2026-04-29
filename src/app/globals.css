@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens: Organic Ethereal + Celestial Minimal Fonts ─── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds — warm sand/parchment palette */
+  --color-bg-base: #F3EDE4;
+  --color-bg-surface: #FAF6F0;
+  --color-bg-card: #FFFFFF;
+  --color-bg-elevated: #E8E0D4;
+
+  /* Brand Accents — earthy terracotta + ochre + sage */
+  --color-terracotta: #B85C38;
+  --color-terracotta-soft: #C97A5A;
+  --color-ochre: #C9A227;
+  --color-sage: #6B8E6B;
+  --color-lavender: #8B7FB8;
+  --color-rose: #B8787A;
+
+  /* Text — warm brown tones, not black */
+  --color-text-primary: #4A3F35;
+  --color-text-secondary: #8A7D6F;
+  --color-text-muted: #B5A99A;
+
+  /* Functional */
+  --color-success: #5A9E6B;
+  --color-error: #C45C5C;
+  --color-border: rgba(139, 111, 94, 0.12);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-base: var(--color-bg-base);
+  --color-bg-surface: var(--color-bg-surface);
+  --color-bg-card: var(--color-bg-card);
+  --color-bg-elevated: var(--color-bg-elevated);
+  --color-terracotta: var(--color-terracotta);
+  --color-terracotta-soft: var(--color-terracotta-soft);
+  --color-ochre: var(--color-ochre);
+  --color-sage: var(--color-sage);
+  --color-lavender: var(--color-lavender);
+  --color-rose: var(--color-rose);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
+  --color-border: var(--color-border);
+
+  /* Fonts from Style 1 (Celestial Minimal) */
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-accent: "Space Grotesk", system-ui, sans-serif;
+
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+  --animate-fade-in-up: fade-in-up 0.6s ease-out forwards;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+/* ─── Blob Background Animation ─── */
+@keyframes blobMorph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: translate(20px, -30px) rotate(5deg);
+  }
+  50% {
+    border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%;
+    transform: translate(-10px, 20px) rotate(-3deg);
+  }
+  75% {
+    border-radius: 40% 30% 60% 50% / 60% 50% 30% 40%;
+    transform: translate(15px, 10px) rotate(2deg);
+  }
+}
+
+.blob-bg {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: blobMorph 25s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Base Styles ─── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-bg-elevated) transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(184, 92, 56, 0.2);
+  color: var(--color-text-primary);
+}
+
+/* ─── Utility classes ─── */
+.terracotta-text {
+  color: var(--color-terracotta);
+}
+
+.ochre-text {
+  color: var(--color-ochre);
+}
+
+.surface-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(139, 111, 94, 0.06);
+}
+
+.surface-card-hover {
+  transition: all 0.4s ease;
+}
+
+.surface-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(139, 111, 94, 0.1);
+}
+
+/* Pill button style */
+.btn-pill {
+  border-radius: 100px;
+  box-shadow: 0 4px 14px rgba(184, 92, 56, 0.25);
+}
+
+.btn-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(184, 92, 56, 0.35);
 }

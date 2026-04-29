@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraPalm — Editorial Brutalist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #FAFAFA;
+      --bg-surface: #FFFFFF;
+      --bg-inverted: #0A0A0A;
+      --color-ink: #0A0A0A;
+      --color-crimson: #9B2335;
+      --color-ochre: #B8860B;
+      --color-stone: #6B6B6B;
+      --color-border: #0A0A0A;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-base);
+      color: var(--color-ink);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: var(--bg-inverted);
+    }
+
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      transition: color 0s;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-links .btn-nav {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: #fff;
+      color: var(--bg-inverted);
+      padding: 0.4rem 1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      transition: all 0s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-links .btn-nav:hover {
+      background: var(--color-crimson);
+      color: #fff;
+    }
+
+    /* Hero - Asymmetric */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      border-right: 1px solid var(--color-border);
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-stone);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--color-ink);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--color-crimson);
+    }
+
+    .hero h1::first-letter {
+      font-size: 1.3em;
+      color: var(--color-crimson);
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--color-stone);
+      max-width: 400px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 0;
+    }
+
+    .btn-solid {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: var(--color-ink);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0s;
+      border: 1px solid var(--color-ink);
+      cursor: pointer;
+    }
+
+    .btn-solid:hover {
+      background: var(--color-crimson);
+      border-color: var(--color-crimson);
+    }
+
+    .btn-ghost {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: transparent;
+      color: var(--color-ink);
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0s;
+      border: 1px solid var(--color-ink);
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      background: var(--color-ink);
+      color: #fff;
+    }
+
+    .hero-right {
+      background: var(--bg-inverted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hero-visual {
+      text-align: center;
+      color: rgba(255,255,255,0.8);
+      padding: 2rem;
+    }
+
+    .hero-visual .palm-icon {
+      font-family: var(--font-display);
+      font-size: 8rem;
+      line-height: 1;
+      color: rgba(255,255,255,0.06);
+      margin-bottom: 1rem;
+    }
+
+    .hero-visual p {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Sections */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 400;
+      color: var(--color-ink);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header p {
+      font-size: 1rem;
+      color: var(--color-stone);
+      line-height: 1.7;
+    }
+
+    /* How It Works - Table */
+    .steps-table {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--color-border);
+    }
+
+    .step-cell {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--color-border);
+    }
+
+    .step-cell:last-child { border-right: none; }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-crimson);
+      margin-bottom: 1.5rem;
+    }
+
+    .step-cell h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      color: var(--color-ink);
+    }
+
+    .step-cell p {
+      font-size: 0.9rem;
+      color: var(--color-stone);
+      line-height: 1.7;
+    }
+
+    /* Pricing - Table */
+    .pricing-table {
+      border: 1px solid var(--color-border);
+    }
+
+    .pricing-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr 140px;
+      border-bottom: 1px solid var(--color-border);
+      align-items: center;
+    }
+
+    .pricing-row:last-child { border-bottom: none; }
+
+    .pricing-row.header {
+      background: var(--bg-inverted);
+      color: #fff;
+    }
+
+    .pricing-row.header > div {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 1rem 1.5rem;
+    }
+
+    .pricing-row > div {
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--color-border);
+    }
+
+    .pricing-row > div:last-child { border-right: none; }
+
+    .pricing-row .plan-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    .pricing-row .plan-price {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .pricing-row .plan-features {
+      font-size: 0.8rem;
+      color: var(--color-stone);
+      line-height: 1.6;
+    }
+
+    .pricing-row .plan-cta {
+      text-align: center;
+    }
+
+    .pricing-row .plan-cta a {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-ink);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--color-border);
+      display: inline-block;
+      transition: all 0s;
+    }
+
+    .pricing-row .plan-cta a:hover {
+      background: var(--color-ink);
+      color: #fff;
+    }
+
+    .pricing-row.featured .plan-name {
+      color: var(--color-crimson);
+    }
+
+    /* Testimonials - Pull quotes */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 1px solid var(--color-border);
+    }
+
+    .testimonial {
+      padding: 2.5rem;
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .testimonial:nth-child(2n) { border-right: none; }
+    .testimonial:nth-last-child(-n+2) { border-bottom: none; }
+
+    .testimonial .quote-bar {
+      width: 2px;
+      height: 40px;
+      background: var(--color-crimson);
+      margin-bottom: 1.25rem;
+    }
+
+    .testimonial p {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--color-ink);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial .name {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--color-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .testimonial .loc {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--color-stone);
+      margin-top: 0.2rem;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bg-inverted);
+      color: #fff;
+      padding: 5rem 2rem 3rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-brand .logo {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+      transition: color 0s;
+    }
+
+    .footer-col a:hover { color: #fff; }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { border-right: none; border-bottom: 1px solid var(--color-border); padding: 6rem 1.5rem 3rem; }
+      .hero-right { min-height: 300px; }
+      .nav-links { display: none; }
+      .steps-table { grid-template-columns: 1fr; }
+      .step-cell { border-right: none; border-bottom: 1px solid var(--color-border); }
+      .pricing-row { grid-template-columns: 1fr; }
+      .pricing-row > div { border-right: none; border-bottom: 1px solid var(--color-border); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .testimonial { border-right: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; }
+      .section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="logo">AuraPalm</a>
+      <div class="nav-links">
+        <a href="#">Palm Reading</a>
+        <a href="#">Face Reading</a>
+        <a href="#">Learn</a>
+        <a href="#">Pricing</a>
+        <a href="#" class="btn-nav">Try Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">AI-Powered Palmistry</div>
+      <h1>Your hands have always been <em>trying to tell you something</em>.</h1>
+      <p>AI-powered palm and face readings. Personal, private, and ready in 60 seconds.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-solid">Read My Palm</a>
+        <a href="#" class="btn-ghost">See How It Works</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="palm-icon">&#9995;</div>
+        <p>Palmistry Reimagined</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>Three simple steps to discover what your features reveal about you.</p>
+    </div>
+    <div class="steps-table">
+      <div class="step-cell">
+        <div class="step-num">01</div>
+        <h3>Upload Your Photo</h3>
+        <p>Take or upload a clear photo of your palm in natural light. Your image is encrypted and never stored.</p>
+      </div>
+      <div class="step-cell">
+        <div class="step-num">02</div>
+        <h3>AI Reads Your Lines</h3>
+        <p>Our model identifies your unique palm lines and facial features — just like a master palmist would.</p>
+      </div>
+      <div class="step-cell">
+        <div class="step-num">03</div>
+        <h3>Receive Your Reading</h3>
+        <p>A beautifully written, personal report — not a template. Yours alone, ready in under a minute.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Simple, Transparent Pricing</h2>
+      <p>Start free. Upgrade when you want the full picture.</p>
+    </div>
+    <div class="pricing-table">
+      <div class="pricing-row header">
+        <div>Plan</div>
+        <div>Price</div>
+        <div>Includes</div>
+        <div></div>
+      </div>
+      <div class="pricing-row">
+        <div class="plan-name">Preview</div>
+        <div class="plan-price">Free</div>
+        <div class="plan-features">Summary report (150 words) · 3 key insights · Free preview</div>
+        <div class="plan-cta"><a href="#">Try Free</a></div>
+      </div>
+      <div class="pricing-row featured">
+        <div class="plan-name">Full Reading</div>
+        <div class="plan-price">$4.99</div>
+        <div class="plan-features">Full report (2,000+ words) · All 4 lines · PDF download · Share card</div>
+        <div class="plan-cta"><a href="#">Get Report</a></div>
+      </div>
+      <div class="pricing-row">
+        <div class="plan-name">Complete Bundle</div>
+        <div class="plan-price">$12.99</div>
+        <div class="plan-features">Palm + Face combined · 12-month forecast · Priority AI · Gift option</div>
+        <div class="plan-cta"><a href="#">Get Bundle</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Loved by Thousands</h2>
+      <p>Real stories from people who discovered more about themselves.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="quote-bar"></div>
+        <p>"I was skeptical, but the reading described my personality so accurately it gave me chills."</p>
+        <div class="name">Emma R.</div>
+        <div class="loc">London, UK</div>
+      </div>
+      <div class="testimonial">
+        <div class="quote-bar"></div>
+        <p>"Got this as a gift and ended up buying the full bundle. The depth surprised me."</p>
+        <div class="name">James K.</div>
+        <div class="loc">Austin, TX</div>
+      </div>
+      <div class="testimonial">
+        <div class="quote-bar"></div>
+        <p>"My heart line reading was uncanny. It described my approach to relationships better than my therapist."</p>
+        <div class="name">Sofia M.</div>
+        <div class="loc">Melbourne, Australia</div>
+      </div>
+      <div class="testimonial">
+        <div class="quote-bar"></div>
+        <p>"I've always been into palmistry, but getting an AI reading added a whole new dimension."</p>
+        <div class="name">David L.</div>
+        <div class="loc">Vancouver, Canada</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="logo">AuraPalm</a>
+          <p>AI-powered palm and face readings. Personal, private, and ready in 60 seconds.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#">Palm Reading</a>
+          <a href="#">Face Reading</a>
+          <a href="#">Pricing</a>
+          <a href="#">Gift a Reading</a>
+        </div>
+        <div class="footer-col">
+          <h4>Learn</h4>
+          <a href="#">Palm Reading Guide</a>
+          <a href="#">Face Reading Guide</a>
+          <a href="#">The Life Line</a>
+          <a href="#">Blog</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">How It Works</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 AuraPalm. All rights reserved.</span>
+        <span>For entertainment and self-reflection only.</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
