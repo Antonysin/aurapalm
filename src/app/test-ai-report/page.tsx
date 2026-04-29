@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Loader2, Download, RefreshCw, ImageIcon, Sparkles, Hand } from "lucide-react";
+import { Loader2, Download, RefreshCw, Sparkles, Hand } from "lucide-react";
 
 const DEMO_SCORES = {
   palm: [
@@ -21,8 +21,6 @@ const DEMO_SCORES = {
 
 export default function TestAIReportPage() {
   const [readingType, setReadingType] = useState<"palm" | "face">("palm");
-  const [userImage, setUserImage] = useState<string | null>(null);
-  const [userImageBase64, setUserImageBase64] = useState<string>("");
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<{
     imageUrl?: string;
@@ -35,31 +33,12 @@ export default function TestAIReportPage() {
     setLogs((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setUserImage(result);
-        const base64 = result.split(',')[1];
-        setUserImageBase64(base64);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleGenerate = async () => {
-    if (!userImageBase64) {
-      addLog("Error: Please upload a photo first");
-      return;
-    }
-
     setGenerating(true);
     setResult(null);
     setLogs([]);
     addLog("🚀 Starting your personal reading...");
-    addLog("🔮 Master palmist analyzing your hand...");
+    addLog("🎨 Crafting your luxury report...");
 
     const startTime = Date.now();
 
@@ -68,7 +47,6 @@ export default function TestAIReportPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userImageBase64,
           readingData: {
             scores: DEMO_SCORES[readingType],
           },
@@ -118,7 +96,7 @@ export default function TestAIReportPage() {
             Your Personal Reading
           </h1>
           <p className="mt-2 text-text-secondary">
-            Upload your palm photo. Our AI master palmist will create a beautiful, personalized report.
+            Generate a beautiful, luxury-style palm reading report card
           </p>
         </div>
 
@@ -154,46 +132,39 @@ export default function TestAIReportPage() {
               </div>
             </div>
 
-            {/* Upload Photo */}
+            {/* Info */}
             <div className="surface-card rounded-2xl p-6">
-              <h3 className="font-display text-lg font-semibold mb-4">
-                Upload Your Photo
+              <h3 className="font-display text-lg font-semibold mb-3">
+                What You Get
               </h3>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                className="hidden"
-                id="ai-report-photo"
-              />
-              <label
-                htmlFor="ai-report-photo"
-                className="block w-full p-4 border-2 border-dashed border-border rounded-xl text-center cursor-pointer hover:border-terracotta/40 transition-colors"
-              >
-                {userImage ? (
-                  <img
-                    src={userImage}
-                    alt="Preview"
-                    className="w-32 h-32 mx-auto rounded-xl object-cover"
-                  />
-                ) : (
-                  <div className="py-4">
-                    <ImageIcon
-                      size={32}
-                      className="mx-auto mb-2 text-text-muted"
-                    />
-                    <p className="text-sm text-text-secondary">
-                      Click to upload your {readingType} photo
-                    </p>
-                  </div>
-                )}
-              </label>
+              <ul className="space-y-2 text-sm text-text-secondary">
+                <li className="flex items-start gap-2">
+                  <span className="text-terracotta mt-0.5">•</span>
+                  <span>Luxury minimalist report card design</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-terracotta mt-0.5">•</span>
+                  <span>Elegant line art of palm/face features</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-terracotta mt-0.5">•</span>
+                  <span>Personalized energy profile scores</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-terracotta mt-0.5">•</span>
+                  <span>Poetic, insightful reading text</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-terracotta mt-0.5">•</span>
+                  <span>Print-ready, shareable PNG</span>
+                </li>
+              </ul>
             </div>
 
             {/* Generate Button */}
             <Button
               onClick={handleGenerate}
-              disabled={generating || !userImage}
+              disabled={generating}
               className="w-full text-base gap-2"
             >
               {generating ? (
@@ -214,9 +185,9 @@ export default function TestAIReportPage() {
               <h3 className="font-display text-sm font-semibold mb-2 text-text-secondary">
                 Process
               </h3>
-              <div className="h-40 overflow-y-auto text-xs font-mono space-y-1">
+              <div className="h-32 overflow-y-auto text-xs font-mono space-y-1">
                 {logs.length === 0 ? (
-                  <p className="text-text-muted">Upload a photo to begin...</p>
+                  <p className="text-text-muted">Click to generate your report...</p>
                 ) : (
                   logs.map((log, i) => (
                     <p key={i} className="text-text-secondary">
@@ -257,7 +228,7 @@ export default function TestAIReportPage() {
                   {result.poeticDescription && (
                     <div className="p-4 bg-bg-surface rounded-xl">
                       <p className="text-xs font-semibold text-text-secondary mb-1">
-                        Master Palmist's Insight:
+                        Your Reading:
                       </p>
                       <p className="text-sm text-text-primary italic leading-relaxed">
                         {result.poeticDescription}

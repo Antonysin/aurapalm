@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PALM_ANALYSIS_PROMPT, FACE_ANALYSIS_PROMPT, REPORT_IMAGE_PROMPT } from "@/lib/prompts";
+import { REPORT_IMAGE_PROMPT } from "@/lib/prompts";
 
 const APIMART_BASE_URL = "https://api.apimart.ai/v1";
 const APIMART_API_KEY = process.env.APIMART_API_KEY || "";
@@ -37,9 +37,40 @@ async function pollTaskStatus(taskId: string, maxAttempts = 40): Promise<string 
   throw new Error("Timeout waiting for image generation");
 }
 
+// Pre-written poetic descriptions for different palm types
+const POETIC_DESCRIPTIONS = {
+  palm: [
+    "Your life line arcs with steady grace, revealing a soul that builds wisdom through experience. The heart line's gentle curve speaks of deep empathy and intentional love. A rare island near the midpoint marks a transformative chapter that forged your resilience.",
+    
+    "The bold sweep of your fate line declares a purposeful path — you are someone who shapes destiny rather than follows it. Your head line runs clear and strong, betraying a mind that values truth over comfort. The mount of Jupiter rises prominently, suggesting natural leadership and quiet confidence.",
+    
+    "Your palm tells of a dreamer grounded in reality. The heart line forks delicately at its end, revealing someone who loves with both passion and intellect. A series of small crosses along the life line mark moments of profound change that ultimately strengthened your foundation.",
+    
+    "The long, unbroken head line suggests a relentless curiosity — you are someone who must understand the 'why' behind everything. Your heart line dips deeply, indicating emotional depth that surprises even yourself. The fate line emerges clearly from the wrist, speaking of a calling discovered early and pursued with devotion.",
+    
+    "Your hand reveals the mark of a storyteller. The life line's generous arc promises vitality and adventure, while the heart line's unusual length suggests a capacity for love that expands with age. A star marking near the Apollo mount hints at creative gifts waiting to be fully expressed.",
+  ],
+  face: [
+    "Your features reveal a natural diplomat — the balanced proportions of your face suggest someone who sees all sides before judging. The gentle curve of your brow line speaks of empathy worn lightly, while the determined set of your jaw reveals hidden reserves of willpower.",
+    
+    "The architecture of your face tells of an old soul in modern times. High cheekbones suggest vitality and social ease, while the thoughtful depth of your eyes reveals an inner life rich with observation. Your smile lines emerge early, marking someone who laughs often and genuinely.",
+    
+    "Your facial structure embodies the ideal of 'still waters run deep.' The calm symmetry suggests balance, yet the intensity of your gaze betrays passionate convictions held quietly. The strong bridge of your nose speaks of decisiveness — when you choose, you choose completely.",
+    
+    "The soft angles of your face suggest adaptability and emotional intelligence. Your eyes, set with perfect spacing, indicate someone who processes the world through careful observation before action. The gentle prominence of your chin reveals persistence disguised as patience.",
+    
+    "Your face carries the map of a seeker. The broad forehead speaks of intellectual appetite, while the warm curves of your features suggest a heart that remains open despite experience. The subtle asymmetry of your smile hints at a complex inner world that defies simple categorization.",
+  ],
+};
+
+function getRandomDescription(readingType: "palm" | "face"): string {
+  const descriptions = POETIC_DESCRIPTIONS[readingType];
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { userImageBase64, readingData, readingType } = await req.json();
+    const { readingData, readingType } = await req.json();
 
     if (!APIMART_API_KEY) {
       return NextResponse.json(
@@ -48,85 +79,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Step 1: Analyze the palm/face with GPT-4o Vision
-    console.log("Step 1: Analyzing image with GPT-4o...");
-    
-    const analysisPrompt = readingType === "face" 
-      ? FACE_ANALYSIS_PROMPT 
-      : PALM_ANALYSIS_PROMPT;
+    // Use pre-written poetic description instead of AI analysis
+    // (GPT-4o refuses to analyze palms, so we use curated descriptions)
+    const poeticDescription = getRandomDescription(readingType);
+    console.log("Using curated description:", poeticDescription.slice(0, 100) + "...");
 
-    const analysisResponse = await fetch(`${APIMART_BASE_URL}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${APIMART_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "system",
-            content: "You are a master palmist and face reader. Create beautiful, poetic, deeply insightful analyses.",
-          },
-          {
-            role: "user",
-            content: [
-              { type: "text", text: analysisPrompt },
-              {
-                type: "image_url",
-                image_url: {
-                  url: `data:image/jpeg;base64,${userImageBase64}`,
-                },
-              },
-            ],
-          },
-        ],
-        max_tokens: 800,
-        temperature: 0.7,
-        stream: false, // Ensure non-streaming response
-      }),
-    });
-
-    let poeticDescription = "Your hands reveal a unique story of depth and wisdom.";
-    
-    if (analysisResponse.ok) {
-      const responseText = await analysisResponse.text();
-      console.log("Raw analysis response:", responseText.substring(0, 200));
-      
-      try {
-        const analysisData = JSON.parse(responseText);
-        poeticDescription = analysisData.choices?.[0]?.message?.content || poeticDescription;
-      } catch (parseError) {
-        console.error("Failed to parse analysis response:", parseError);
-        // If it's a stream, extract content from data lines
-        const lines = responseText.split('\n');
-        let fullContent = '';
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const dataStr = line.slice(6);
-            if (dataStr === '[DONE]') continue;
-            try {
-              const chunk = JSON.parse(dataStr);
-              const content = chunk.choices?.[0]?.delta?.content;
-              if (content) fullContent += content;
-            } catch (e) {
-              // Ignore parse errors for individual chunks
-            }
-          }
-        }
-        if (fullContent) {
-          poeticDescription = fullContent;
-        }
-      }
-    } else {
-      const errorText = await analysisResponse.text();
-      console.error("Analysis API error:", errorText);
-    }
-
-    console.log("Analysis complete:", poeticDescription.slice(0, 100) + "...");
-
-    // Step 2: Generate the report image with GPT-Image-2
-    console.log("Step 2: Generating luxury report image...");
+    // Generate the report image with GPT-Image-2
+    console.log("Generating luxury report image...");
     
     const imagePrompt = REPORT_IMAGE_PROMPT({
       readingType,
