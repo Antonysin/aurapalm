@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Check } from "lucide-react";
@@ -70,13 +69,9 @@ export function PricingSnapshot() {
 
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
+          {plans.map((plan) => (
+            <div
               key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: index * 0.12 }}
               className={`surface-card p-8 relative flex flex-col ${
                 plan.featured
                   ? "border-terracotta/30 ring-1 ring-terracotta/10"
@@ -111,17 +106,12 @@ export function PricingSnapshot() {
                   {plan.cta}
                 </Button>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Subscription Option */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-8 text-center"
-        >
+        <div className="mt-8 text-center">
           <div className="surface-card p-8 max-w-2xl mx-auto">
             <p className="text-xs font-semibold uppercase tracking-widest text-terracotta mb-2 font-accent">
               Unlimited Plan
@@ -134,7 +124,7 @@ export function PricingSnapshot() {
             </p>
             <Button variant="secondary">Start 7-Day Free Trial</Button>
           </div>
-        </motion.div>
+        </div>
 
         {/* Guarantee */}
         <div className="mt-8 text-center">

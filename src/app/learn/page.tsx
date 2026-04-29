@@ -68,11 +68,11 @@ export default function LearnPage() {
             const Icon = g.icon;
             return (
               <Link key={g.href} href={g.href} className="group">
-                <div className="glass-card rounded-xl p-6 h-full glass-card-hover">
-                  <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <Icon size={20} className="text-gold" />
+                <div className="surface-card rounded-xl p-6 h-full surface-card-hover">
+                  <div className="w-10 h-10 rounded-xl bg-ochre/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <Icon size={20} className="text-ochre" />
                   </div>
-                  <h2 className="font-display text-lg font-semibold mb-2 group-hover:text-gold transition-colors">
+                  <h2 className="font-display text-lg font-semibold mb-2 group-hover:text-ochre transition-colors">
                     {g.title}
                   </h2>
                   <p className="text-sm text-text-secondary">{g.description}</p>

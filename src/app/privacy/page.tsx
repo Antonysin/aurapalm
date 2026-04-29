@@ -11,7 +11,7 @@ export default function PrivacyPage() {
     <div className="pt-32 pb-16 sm:pt-40 sm:pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-display text-4xl font-semibold mb-8">Privacy Policy</h1>
-        <div className="glass-card rounded-2xl p-8 sm:p-10 space-y-6 text-sm text-text-secondary leading-relaxed">
+        <div className="surface-card rounded-2xl p-8 sm:p-10 space-y-6 text-sm text-text-secondary leading-relaxed">
           <p><strong className="text-text-primary">Last updated:</strong> April 2026</p>
 
           <h2 className="font-display text-xl font-semibold text-text-primary pt-4">1. What We Collect</h2>

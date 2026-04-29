@@ -8,9 +8,24 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Organic Blob Backgrounds */}
-      <div className="blob-bg w-[500px] h-[500px] bg-terracotta/5 top-[-10%] left-[-5%]" />
-      <div className="blob-bg w-[400px] h-[400px] bg-ochre/4 top-[40%] right-[-10%]" style={{ animationDelay: "-8s" }} />
-      <div className="blob-bg w-[350px] h-[350px] bg-sage/4 bottom-[10%] left-[30%]" style={{ animationDelay: "-16s" }} />
+      <div
+        className="blob-bg w-[500px] h-[500px] top-[-10%] left-[-5%]"
+        style={{ backgroundColor: "rgba(184, 92, 56, 0.05)" }}
+      />
+      <div
+        className="blob-bg w-[400px] h-[400px] top-[40%] right-[-10%]"
+        style={{
+          backgroundColor: "rgba(201, 162, 39, 0.04)",
+          animationDelay: "-8s",
+        }}
+      />
+      <div
+        className="blob-bg w-[350px] h-[350px] bottom-[10%] left-[30%]"
+        style={{
+          backgroundColor: "rgba(107, 142, 107, 0.04)",
+          animationDelay: "-16s",
+        }}
+      />
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 text-center">
@@ -26,12 +41,16 @@ export function Hero() {
           {/* Headline */}
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-light leading-tight max-w-4xl mx-auto">
             Your hands have always been{" "}
-            <em className="not-italic text-terracotta font-normal">trying to tell you something</em>.
+            <em className="not-italic text-terracotta font-normal">
+              trying to tell you something
+            </em>
+            .
           </h1>
 
           {/* Subheadline */}
           <p className="mt-6 text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
-            AI-powered palm and face readings. Personal, private, and ready in 60 seconds.
+            AI-powered palm and face readings. Personal, private, and ready in
+            60 seconds.
           </p>
 
           {/* CTAs */}
@@ -64,17 +83,28 @@ export function Hero() {
               ))}
             </div>
             <p className="text-sm text-text-muted">
-              Trusted by over <span className="text-text-secondary font-medium">200,000</span> readers worldwide
+              Trusted by over{" "}
+              <span className="text-text-secondary font-medium">200,000</span>{" "}
+              readers worldwide
             </p>
           </div>
 
           {/* Privacy Micro-copy */}
           <p className="mt-6 text-xs text-text-muted flex items-center justify-center gap-1.5">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-terracotta">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="text-terracotta"
+            >
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
             </svg>
-            Your photo is analyzed and immediately deleted. We never store your image.
+            Your photo is analyzed and immediately deleted. We never store your
+            image.
           </p>
         </div>
       </div>

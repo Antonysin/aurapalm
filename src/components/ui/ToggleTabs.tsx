@@ -24,13 +24,13 @@ export function ToggleTabs({ tabs, activeTab, onChange }: ToggleTabsProps) {
           className={cn(
             "relative px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200",
             activeTab === tab.id
-              ? "bg-gold/10 text-gold shadow-sm"
+              ? "bg-ochre/10 text-ochre shadow-sm"
               : "text-text-muted hover:text-text-secondary"
           )}
         >
           {tab.label}
           {tab.badge && (
-            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] uppercase tracking-wider font-bold bg-gold/20 text-gold rounded">
+            <span className="ml-1.5 px-1.5 py-0.5 text-[10px] uppercase tracking-wider font-bold bg-ochre/20 text-ochre rounded">
               {tab.badge}
             </span>
           )}

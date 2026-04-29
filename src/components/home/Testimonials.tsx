@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 const testimonials = [
   {
     quote:
@@ -81,12 +79,8 @@ export function Testimonials() {
         {/* Scrollable Cards */}
         <div className="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scrollbar-hide">
           {testimonials.map((t, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
               className="surface-card p-6 sm:p-8 min-w-[300px] sm:min-w-[340px] max-w-[340px] flex-shrink-0 snap-start"
             >
               <StarRating rating={t.rating} />
@@ -101,7 +95,7 @@ export function Testimonials() {
                 </p>
                 <p className="text-xs text-text-muted mt-0.5">{t.location}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

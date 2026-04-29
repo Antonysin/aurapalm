@@ -158,14 +158,16 @@ export default function FaceReadingUploadPage() {
         {/* CTA */}
         {image && (
           <div className="mt-8 text-center animate-fade-in">
-            <Button size="lg" className="text-base w-full sm:w-auto">
-              Looks Good — Analyze My Face
-            </Button>
+            <Link href="/face-reading/results">
+              <Button size="lg" className="text-base w-full sm:w-auto">
+                Looks Good — Analyze My Face
+              </Button>
+            </Link>
           </div>
         )}
 
         {/* Photo Tips */}
-        <div className="mt-10 glass-card rounded-2xl p-6 sm:p-8">
+        <div className="mt-10 surface-card rounded-2xl p-6 sm:p-8">
           <h3 className="font-display text-xl font-semibold mb-4 flex items-center gap-2">
             <Camera size={18} className="text-lavender" />
             For the Best Reading
@@ -197,7 +199,7 @@ export default function FaceReadingUploadPage() {
         {/* Privacy Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-text-muted flex items-center justify-center gap-1.5">
-            <span className="text-gold">&#x1f512;</span>
+            <span className="text-lavender">&#x1f512;</span>
             Your image is sent securely for analysis and deleted immediately
             afterward. We do not store, share, or use your photo for any other purpose.
           </p>

@@ -24,7 +24,7 @@ export function Accordion({ items, className }: AccordionProps) {
         return (
           <div
             key={index}
-            className="glass-card rounded-xl overflow-hidden transition-all duration-300"
+            className="surface-card rounded-xl overflow-hidden transition-all duration-300"
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : index)}

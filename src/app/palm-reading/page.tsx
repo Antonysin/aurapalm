@@ -45,9 +45,9 @@ export default function PalmReadingPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/20 mb-6">
-            <Sparkles size={14} className="text-gold" />
-            <span className="text-xs font-medium text-gold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ochre/10 border border-ochre/20 mb-6">
+            <Sparkles size={14} className="text-ochre" />
+            <span className="text-xs font-medium text-ochre uppercase tracking-wider">
               Palm Reading
             </span>
           </div>
@@ -81,8 +81,8 @@ export default function PalmReadingPage() {
             const Icon = f.icon;
             return (
               <Card key={f.title} hover>
-                <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center mb-4">
-                  <Icon size={20} className="text-gold" />
+                <div className="w-10 h-10 rounded-xl bg-ochre/10 flex items-center justify-center mb-4">
+                  <Icon size={20} className="text-ochre" />
                 </div>
                 <h3 className="font-display text-lg font-semibold mb-2">{f.title}</h3>
                 <p className="text-sm text-text-secondary">{f.description}</p>
@@ -106,8 +106,8 @@ export default function PalmReadingPage() {
             { name: "Hand Shape", desc: "Earth, air, fire, or water hand types" },
             { name: "Mounts", desc: "Key personality amplifiers on the palm" },
           ].map((item) => (
-            <div key={item.name} className="glass-card rounded-xl p-5 flex items-start gap-4">
-              <div className="w-2 h-2 rounded-full bg-gold mt-2 flex-shrink-0" />
+            <div key={item.name} className="surface-card rounded-xl p-5 flex items-start gap-4">
+              <div className="w-2 h-2 rounded-full bg-ochre mt-2 flex-shrink-0" />
               <div>
                 <h3 className="font-medium text-sm">{item.name}</h3>
                 <p className="text-xs text-text-secondary mt-0.5">{item.desc}</p>

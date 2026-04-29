@@ -66,9 +66,9 @@ export default function HowItWorksPage() {
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div key={index} className="glass-card rounded-2xl p-6 sm:p-8 flex gap-5">
-                <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
-                  <Icon size={22} className="text-gold" />
+              <div key={index} className="surface-card rounded-2xl p-6 sm:p-8 flex gap-5">
+                <div className="w-12 h-12 rounded-xl bg-ochre/10 flex items-center justify-center flex-shrink-0">
+                  <Icon size={22} className="text-ochre" />
                 </div>
                 <div>
                   <h2 className="font-display text-xl font-semibold mb-2">{step.title}</h2>

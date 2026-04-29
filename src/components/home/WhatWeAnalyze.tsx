@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Eye, Hand, Sparkles } from "lucide-react";
 
 const categories = [
@@ -58,15 +57,11 @@ export function WhatWeAnalyze() {
 
         {/* Two-Column Grid */}
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          {categories.map((cat, index) => {
+          {categories.map((cat) => {
             const Icon = cat.icon;
             return (
-              <motion.div
+              <div
                 key={cat.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
                 className="surface-card p-8 sm:p-10"
               >
                 <div className="flex items-center gap-4 mb-8">
@@ -87,7 +82,7 @@ export function WhatWeAnalyze() {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             );
           })}
         </div>

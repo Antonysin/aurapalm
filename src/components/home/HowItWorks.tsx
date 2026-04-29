@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Camera, Sparkles, ScrollText } from "lucide-react";
 
 const steps = [
@@ -52,12 +51,8 @@ export function HowItWorks() {
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <motion.div
+              <div
                 key={step.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
                 className="relative text-center group"
               >
                 {/* Step Number — handwritten style */}
@@ -84,7 +79,7 @@ export function HowItWorks() {
                 {index < steps.length - 1 && (
                   <div className="hidden md:block absolute top-10 -right-6 w-12 h-px bg-gradient-to-r from-terracotta/20 to-transparent" />
                 )}
-              </motion.div>
+              </div>
             );
           })}
         </div>

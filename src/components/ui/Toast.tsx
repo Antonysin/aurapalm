@@ -64,9 +64,9 @@ function ToastItem({
 
   return (
     <div
-      className={`flex items-start gap-3 glass-card rounded-xl p-4 min-w-[300px] max-w-sm animate-fade-in-up border ${colors[t.type]}`}
+      className={`flex items-start gap-3 surface-card rounded-xl p-4 min-w-[300px] max-w-sm animate-fade-in-up border ${colors[t.type]}`}
     >
-      <Icon size={18} className="text-gold mt-0.5 flex-shrink-0" />
+      <Icon size={18} className="text-ochre mt-0.5 flex-shrink-0" />
       <p className="text-sm text-text-primary flex-1">{t.message}</p>
       <button onClick={onDismiss} className="text-text-muted hover:text-text-primary">
         <X size={14} />

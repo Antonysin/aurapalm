@@ -23,7 +23,7 @@ export default function AboutPage() {
 
       <Section>
         <div className="max-w-3xl mx-auto prose prose-invert">
-          <div className="glass-card rounded-2xl p-8 sm:p-10 space-y-6">
+          <div className="surface-card rounded-2xl p-8 sm:p-10 space-y-6">
             <p className="text-text-secondary leading-relaxed">
               AuraPalm was built on a simple idea: the tools for self-discovery
               should be personal, private, and accessible to anyone.
@@ -70,7 +70,7 @@ export default function AboutPage() {
                   },
                 ].map((p) => (
                   <li key={p.title} className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-gold mt-2 flex-shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-ochre mt-2 flex-shrink-0" />
                     <div>
                       <strong className="text-text-primary text-sm">{p.title}</strong>
                       <p className="text-sm text-text-secondary">{p.desc}</p>

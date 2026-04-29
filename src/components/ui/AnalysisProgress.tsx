@@ -38,7 +38,7 @@ export function AnalysisProgress() {
                 isDone
                   ? "bg-success/10 text-success"
                   : isActive
-                    ? "bg-gold/10 text-gold"
+                    ? "bg-ochre/10 text-ochre"
                     : "bg-bg-elevated text-text-muted"
               }`}
             >
@@ -62,7 +62,7 @@ export function AnalysisProgress() {
               </p>
             </div>
             {isActive && !isDone && (
-              <div className="w-4 h-4 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-ochre border-t-transparent rounded-full animate-spin" />
             )}
           </div>
         );

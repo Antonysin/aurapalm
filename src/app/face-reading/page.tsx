@@ -79,7 +79,7 @@ export default function FaceReadingPage() {
           {features.map((f) => {
             const Icon = f.icon;
             return (
-              <div key={f.title} className="glass-card rounded-xl p-6 glass-card-hover">
+              <div key={f.title} className="surface-card rounded-xl p-6 surface-card-hover">
                 <div className="w-10 h-10 rounded-xl bg-lavender/10 flex items-center justify-center mb-4">
                   <Icon size={20} className="text-lavender" />
                 </div>
@@ -105,7 +105,7 @@ export default function FaceReadingPage() {
             { name: "Facial Symmetry", desc: "Balance across different life dimensions" },
             { name: "Expression Lines", desc: "Tendencies and emotional patterns" },
           ].map((item) => (
-            <div key={item.name} className="glass-card rounded-xl p-5 flex items-start gap-4">
+            <div key={item.name} className="surface-card rounded-xl p-5 flex items-start gap-4">
               <div className="w-2 h-2 rounded-full bg-lavender mt-2 flex-shrink-0" />
               <div>
                 <h3 className="font-medium text-sm">{item.name}</h3>

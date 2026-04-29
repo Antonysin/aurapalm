@@ -48,7 +48,7 @@ export function Modal({ isOpen, onClose, title, children, action }: ModalProps) 
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="glass-card rounded-2xl p-6 sm:p-8 max-w-md w-full animate-fade-in-up">
+      <div className="surface-card rounded-2xl p-6 sm:p-8 max-w-md w-full animate-fade-in-up">
         <div className="flex items-center justify-between mb-4">
           <h2 id="modal-title" className="font-display text-xl font-semibold">
             {title}

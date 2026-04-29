@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { ChevronDown, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,12 +26,7 @@ export function SamplePreview() {
           </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
-        >
+        <div className="max-w-3xl mx-auto">
           <div className="surface-card p-8 sm:p-10">
             {/* Pull Quote */}
             <div className="relative mb-8 pb-6 border-b border-border">
@@ -72,7 +66,7 @@ export function SamplePreview() {
               Get Your Own Reading
             </Button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

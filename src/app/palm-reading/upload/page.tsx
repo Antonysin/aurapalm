@@ -88,10 +88,10 @@ export default function PalmReadingUploadPage() {
             relative border-2 border-dashed rounded-2xl p-12 sm:p-16 text-center cursor-pointer
             transition-all duration-200
             ${dragOver
-              ? "border-gold bg-gold/5"
+              ? "border-terracotta bg-terracotta/5"
               : image
-                ? "border-gold/40 bg-bg-card"
-                : "border-border hover:border-gold/40 hover:bg-bg-card"
+                ? "border-terracotta/40 bg-bg-card"
+                : "border-border hover:border-terracotta/40 hover:bg-bg-card"
             }
           `}
         >
@@ -125,8 +125,8 @@ export default function PalmReadingUploadPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-gold/10 flex items-center justify-center">
-                <Upload size={28} className="text-gold" />
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-terracotta/10 flex items-center justify-center">
+                <Upload size={28} className="text-terracotta" />
               </div>
               <div>
                 <p className="text-base font-medium text-text-primary">
@@ -163,16 +163,18 @@ export default function PalmReadingUploadPage() {
         {/* CTA Button */}
         {image && (
           <div className="mt-8 text-center animate-fade-in">
-            <Button size="lg" className="text-base w-full sm:w-auto">
-              Looks Good — Analyze My Palm
-            </Button>
+            <Link href="/palm-reading/results">
+              <Button size="lg" className="text-base w-full sm:w-auto">
+                Looks Good — Analyze My Palm
+              </Button>
+            </Link>
           </div>
         )}
 
         {/* Photo Tips */}
-        <div className="mt-10 glass-card rounded-2xl p-6 sm:p-8">
+        <div className="mt-10 surface-card rounded-2xl p-6 sm:p-8">
           <h3 className="font-display text-xl font-semibold mb-4 flex items-center gap-2">
-            <Camera size={18} className="text-gold" />
+            <Camera size={18} className="text-terracotta" />
             For the Best Reading
           </h3>
           <div className="grid sm:grid-cols-2 gap-3 text-sm">
@@ -202,7 +204,7 @@ export default function PalmReadingUploadPage() {
         {/* Privacy Notice */}
         <div className="mt-6 text-center">
           <p className="text-xs text-text-muted flex items-center justify-center gap-1.5">
-            <span className="text-gold">&#x1f512;</span>
+            <span className="text-terracotta">&#x1f512;</span>
             Your image is sent securely for analysis and deleted immediately
             afterward. We do not store, share, or use your photo for any other purpose.
           </p>

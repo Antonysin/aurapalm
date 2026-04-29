@@ -28,13 +28,13 @@ export function BlurOverlay({
       <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-bg-base to-transparent z-10" />
       {/* CTA overlay */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
-        <div className="glass-card rounded-2xl p-8 sm:p-10 max-w-sm mx-auto text-center animate-fade-in-up">
+        <div className="surface-card rounded-2xl p-8 sm:p-10 max-w-sm mx-auto text-center animate-fade-in-up">
           <div className="text-3xl mb-2">&#10024;</div>
           <h3 className="font-display text-2xl font-semibold mb-3">{title}</h3>
           <ul className="space-y-2 mb-6 text-left">
             {features.map((f) => (
               <li key={f} className="flex items-start gap-2 text-sm text-text-secondary">
-                <span className="text-gold mt-0.5">&bull;</span> {f}
+                <span className="text-ochre mt-0.5">&bull;</span> {f}
               </li>
             ))}
           </ul>
@@ -44,7 +44,7 @@ export function BlurOverlay({
             </Button>
           </Link>
           <p className="text-xs text-text-muted mt-4 flex items-center justify-center gap-1.5">
-            <span className="text-gold">&#x1f512;</span>
+            <span className="text-ochre">&#x1f512;</span>
             Secure &middot; Instant &middot; Yours forever
           </p>
         </div>

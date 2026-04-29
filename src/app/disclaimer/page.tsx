@@ -11,9 +11,9 @@ export default function DisclaimerPage() {
     <div className="pt-32 pb-16 sm:pt-40 sm:pb-20">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-display text-4xl font-semibold mb-8">Disclaimer</h1>
-        <div className="glass-card rounded-2xl p-8 sm:p-10 space-y-6 text-sm text-text-secondary leading-relaxed">
-          <div className="p-4 rounded-xl bg-gold/5 border border-gold/20 mb-6">
-            <p className="font-medium text-gold text-base mb-1">Important Notice</p>
+        <div className="surface-card rounded-2xl p-8 sm:p-10 space-y-6 text-sm text-text-secondary leading-relaxed">
+          <div className="p-4 rounded-xl bg-ochre/5 border border-ochre/20 mb-6">
+            <p className="font-medium text-ochre text-base mb-1">Important Notice</p>
             <p>AuraPalm is designed for <strong className="text-text-primary">entertainment and personal reflection only</strong>.</p>
           </div>
 
