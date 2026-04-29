@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${APIMART_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-image-2",
+        model: "gpt-image-2-official",
         prompt: prompt,
         n: 1,
         size: "1024x1024",
