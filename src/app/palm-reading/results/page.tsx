@@ -1,22 +1,82 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Button } from "@/components/ui/Button";
-import { Share2, Download, ArrowRight, Lock } from "lucide-react";
+import { Share2, Download, ArrowRight, Lock, Loader2, ImageIcon } from "lucide-react";
 import Link from "next/link";
 
-const scores = [
-  { label: "Love", percentage: 78, color: "#c47b8a" },
-  { label: "Career", percentage: 82, color: "#d4a853" },
-  { label: "Vitality", percentage: 65, color: "#4caf82" },
-  { label: "Intuition", percentage: 91, color: "#9b7fd4" },
-];
+interface ReadingData {
+  scores: Array<{ label: string; percentage: number; color: string }>;
+  preview: string;
+  fullReport: Record<string, string | string[]>;
+}
 
-const previewText = `Your life line arcs with a steady, unhurried curve — suggesting someone who builds momentum over time rather than burning bright and fast. It speaks of resilience earned through experience, not given at birth. There's a small island near the midpoint, around what palmists would place in your late twenties, indicating a period of significant transition that ultimately strengthened your foundation rather than breaking it.
+export default function PalmResultsPage() {
+  const [reading, setReading] = useState<ReadingData | null>(null);
+  const [reportImage, setReportImage] = useState<string | null>(null);
+  const [generatingImage, setGeneratingImage] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Load reading from sessionStorage
+    const stored = sessionStorage.getItem('palmReading');
+    if (stored) {
+      try {
+        setReading(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to parse reading:', e);
+      }
+    }
+    setLoading(false);
+  }, []);
+
+  const handleGenerateImage = async () => {
+    if (!reading) return;
+    
+    setGeneratingImage(true);
+    try {
+      const response = await fetch('/api/generate-report-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          palmReading: reading.preview,
+          scores: reading.scores,
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.success && data.imageUrl) {
+        setReportImage(data.imageUrl);
+      }
+    } catch (error) {
+      console.error('Failed to generate image:', error);
+    } finally {
+      setGeneratingImage(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="pt-24 pb-16 sm:pt-32 sm:pb-20 flex items-center justify-center min-h-[50vh]">
+        <Loader2 size={32} className="animate-spin text-terracotta" />
+      </div>
+    );
+  }
+
+  // Default data if no reading available
+  const scores = reading?.scores || [
+    { label: "Love", percentage: 78, color: "#c47b8a" },
+    { label: "Career", percentage: 82, color: "#d4a853" },
+    { label: "Vitality", percentage: 65, color: "#4caf82" },
+    { label: "Intuition", percentage: 91, color: "#9b7fd4" },
+  ];
+
+  const previewText = reading?.preview || `Your life line arcs with a steady, unhurried curve — suggesting someone who builds momentum over time rather than burning bright and fast. It speaks of resilience earned through experience, not given at birth. There's a small island near the midpoint, around what palmists would place in your late twenties, indicating a period of significant transition that ultimately strengthened your foundation rather than breaking it.
 
 Your heart line tells a different story. It curves with unusual depth — suggesting someone who loves with intention, not impulse. The fork at its end, branching toward the mount of Jupiter, reveals a person who needs intellectual connection as much as emotional warmth. You don't just fall in love; you choose it, consciously and deliberately.`;
 
-export default function PalmResultsPage() {
   return (
     <div className="pt-24 pb-16 sm:pt-32 sm:pb-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,6 +109,60 @@ export default function PalmResultsPage() {
             ))}
           </div>
         </div>
+
+        {/* Report Image (if generated) */}
+        {reportImage && (
+          <div className="mb-12">
+            <h2 className="font-display text-2xl font-semibold mb-6 text-center">
+              Your Visual Report
+            </h2>
+            <div className="surface-card rounded-2xl p-4 sm:p-6">
+              <img 
+                src={reportImage} 
+                alt="Your palm reading report"
+                className="w-full rounded-xl"
+              />
+              <div className="mt-4 flex justify-center gap-3">
+                <a 
+                  href={reportImage} 
+                  download="aurapalm-reading.png"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2 text-xs font-medium bg-transparent text-text-primary border border-border hover:border-terracotta/40 rounded-full transition-all duration-300 hover:scale-[1.03]"
+                >
+                  <Download size={14} /> Download
+                </a>
+                <Button variant="secondary" size="sm" className="gap-2">
+                  <Share2 size={14} /> Share
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Generate Image Button */}
+        {!reportImage && (
+          <div className="text-center mb-12">
+            <Button 
+              onClick={handleGenerateImage}
+              disabled={generatingImage}
+              className="gap-2"
+            >
+              {generatingImage ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  Generating Visual Report...
+                </>
+              ) : (
+                <>
+                  <ImageIcon size={16} />
+                  Generate Visual Report Card
+                </>
+              )}
+            </Button>
+            <p className="text-xs text-text-muted mt-2">
+              Powered by AI — Creates a beautiful shareable image of your reading
+            </p>
+          </div>
+        )}
 
         {/* Free Preview */}
         <div className="mb-12">

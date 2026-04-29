@@ -2,9 +2,10 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { ToggleTabs } from "@/components/ui/ToggleTabs";
-import { Upload, Camera, Info, ImageIcon } from "lucide-react";
+import { Upload, Camera, Info, ImageIcon, Loader2 } from "lucide-react";
 
 const readingTypes = [
   { id: "palm", label: "Palm Reading" },
@@ -13,9 +14,11 @@ const readingTypes = [
 ];
 
 export default function PalmReadingUploadPage() {
+  const router = useRouter();
   const [image, setImage] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [readingType, setReadingType] = useState("palm");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,6 +53,43 @@ export default function PalmReadingUploadPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleFile(file);
+  };
+
+  const handleAnalyze = async () => {
+    if (!image) return;
+    
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Extract base64 from data URL
+      const base64Image = image.split(',')[1];
+
+      const response = await fetch('/api/analyze-palm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageBase64: base64Image,
+          readingType: 'palm',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Analysis failed');
+      }
+
+      // Store reading in sessionStorage for results page
+      sessionStorage.setItem('palmReading', JSON.stringify(data.reading));
+      
+      // Navigate to results
+      router.push('/palm-reading/results');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -163,11 +203,21 @@ export default function PalmReadingUploadPage() {
         {/* CTA Button */}
         {image && (
           <div className="mt-8 text-center animate-fade-in">
-            <Link href="/palm-reading/results">
-              <Button size="lg" className="text-base w-full sm:w-auto">
-                Looks Good — Analyze My Palm
-              </Button>
-            </Link>
+            <Button 
+              size="lg" 
+              className="text-base w-full sm:w-auto"
+              onClick={handleAnalyze}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={18} className="animate-spin mr-2" />
+                  Analyzing...
+                </>
+              ) : (
+                "Looks Good — Analyze My Palm"
+              )}
+            </Button>
           </div>
         )}
 
