@@ -83,14 +83,44 @@ export async function POST(req: NextRequest) {
         ],
         max_tokens: 800,
         temperature: 0.7,
+        stream: false, // Ensure non-streaming response
       }),
     });
 
     let poeticDescription = "Your hands reveal a unique story of depth and wisdom.";
     
     if (analysisResponse.ok) {
-      const analysisData = await analysisResponse.json();
-      poeticDescription = analysisData.choices?.[0]?.message?.content || poeticDescription;
+      const responseText = await analysisResponse.text();
+      console.log("Raw analysis response:", responseText.substring(0, 200));
+      
+      try {
+        const analysisData = JSON.parse(responseText);
+        poeticDescription = analysisData.choices?.[0]?.message?.content || poeticDescription;
+      } catch (parseError) {
+        console.error("Failed to parse analysis response:", parseError);
+        // If it's a stream, extract content from data lines
+        const lines = responseText.split('\n');
+        let fullContent = '';
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const dataStr = line.slice(6);
+            if (dataStr === '[DONE]') continue;
+            try {
+              const chunk = JSON.parse(dataStr);
+              const content = chunk.choices?.[0]?.delta?.content;
+              if (content) fullContent += content;
+            } catch (e) {
+              // Ignore parse errors for individual chunks
+            }
+          }
+        }
+        if (fullContent) {
+          poeticDescription = fullContent;
+        }
+      }
+    } else {
+      const errorText = await analysisResponse.text();
+      console.error("Analysis API error:", errorText);
     }
 
     console.log("Analysis complete:", poeticDescription.slice(0, 100) + "...");
